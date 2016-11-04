@@ -1,3 +1,5 @@
+[WORK IN PROGRESS]
+
 # Temporal Attention Model for Neural Machine Translation
 Unofficial implementation of paper: http://arxiv.org/abs/1608.02927
 ## Requirements:
