@@ -1,5 +1,4 @@
 from tensorflow.models.rnn.translate import data_utils
-from keras.preprocessing.sequence import pad_sequences
 import re
 
 
@@ -90,8 +89,6 @@ def prepare_date(data_dir, vocab_size, sample=True):
     #FIXME: some non-ascii charachters
     en_vocab_size = len(en_vocab) + 1
     fr_vocab_size = len(fr_vocab) + 1
-    print("en_vocab_size", en_vocab_size)
-    print("fr_vocab_size", fr_vocab_size)
 
     if sample:
         en_ids = read_data(en2013_path)
@@ -103,11 +100,7 @@ def prepare_date(data_dir, vocab_size, sample=True):
         fr_ids = read_data(fr2_path)
 
     #Make it the same length (= the max length of the sentences) with zeros for shorter sentences
-    en_matrix = pad_sequences(en_ids)
-    fr_matrix = pad_sequences(fr_ids)
-    print("en_max_lentgh", en_matrix.shape[1])
-    print("fr_max_length", fr_matrix.shape[1])
-    return LanguageDataSet(en_matrix, en_vocab, en_index), LanguageDataSet(fr_matrix, fr_vocab, fr_index)
+    return LanguageDataSet(en_ids, en_vocab, en_index), LanguageDataSet(fr_ids, fr_vocab, fr_index)
 
 
 if __name__ == "__main__":
