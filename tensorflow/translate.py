@@ -44,6 +44,7 @@ import tensorflow as tf
 
 from tensorflow.models.rnn.translate import data_utils
 import seq2seq_model
+from temporal_embedding_attention import temporal_embedding_attention_seq2seq
 
 
 tf.app.flags.DEFINE_float("learning_rate", 0.5, "Learning rate.")
@@ -128,6 +129,7 @@ def create_model(session, forward_only):
       FLAGS.batch_size,
       FLAGS.learning_rate,
       FLAGS.learning_rate_decay_factor,
+      temporal_embedding_attention_seq2seq,
       forward_only=forward_only,
       dtype=dtype)
   ckpt = tf.train.get_checkpoint_state(FLAGS.train_dir)
@@ -272,7 +274,7 @@ def self_test():
     print("Self-test for neural translation model.")
     # Create model with vocabularies of 10, 2 small buckets, 2 layers of 32.
     model = seq2seq_model.Seq2SeqModel(10, 10, [(3, 3), (6, 6)], 32, 2,
-                                       5.0, 32, 0.3, 0.99, num_samples=8)
+                                       5.0, 32, 0.3, 0.99, temporal_embedding_attention_seq2seq, num_samples=8)
     sess.run(tf.global_variables_initializer())
 
     # Fake data set for both the (3, 3) and (6, 6) bucket.

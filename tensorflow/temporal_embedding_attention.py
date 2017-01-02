@@ -186,6 +186,7 @@ def temporal_attention_decoder(decoder_inputs,
     batch_attn_size = array_ops.pack([batch_size, attn_size])
     attns = [array_ops.zeros(batch_attn_size, dtype=dtype)
              for _ in xrange(num_heads)]
+    temporal_attns = [attns]
     for a in attns:  # Ensure the second shape of attention vectors is set.
       a.set_shape([None, attn_size])
     if initial_state_attention:
@@ -211,6 +212,9 @@ def temporal_attention_decoder(decoder_inputs,
           attns = attention(state)
       else:
         attns = attention(state)
+
+      attns = [math_ops.div(attns[-1], math_ops.reduce_sum(temporal_attns), "temporal_attention")]
+      temporal_attns.append(attns)
 
       with variable_scope.variable_scope("AttnOutputProjection"):
         output = linear([cell_output] + attns, output_size, True)

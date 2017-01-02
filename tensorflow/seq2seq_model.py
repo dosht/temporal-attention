@@ -38,7 +38,7 @@ class Seq2SeqModel(object):
                batch_size,
                learning_rate,
                learning_rate_decay_factor,
-               embedding_attention_function=tf.nn.seq2seq.embedding_attention_seq2seq,  # TODO replace by temporal attention embedding
+               embedding_attention_function,  # TODO replace by temporal attention embedding
                use_lstm=False,
                num_samples=512,
                forward_only=False,
